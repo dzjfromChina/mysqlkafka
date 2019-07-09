@@ -54,7 +54,8 @@ public class KafkaProducerDemo {
         //创建生产者
         Producer<String, String> producer = new KafkaProducer<>(props);
         ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, msg);
-        producer.send(producerRecord);
+        //ProducerCallbackDemo producerCallbackDemo = new ProducerCallbackDemo();
+        producer.send(producerRecord,new ProducerCallbackDemo(producerRecord,0));
     }
 
 }
