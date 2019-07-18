@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
 import com.github.shyiko.mysql.binlog.event.*;
 import com.mysqlkafka.mysqlkafka.kafka.KafkaProducerDemo;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -18,6 +21,8 @@ import java.util.*;
  */
 @Component
 public class BinlogClientRunner implements CommandLineRunner {
+    public final Logger logger = LogManager.getLogger(this.getClass());
+
 
     @Value("${binlog.host}")
     private String host;
@@ -98,7 +103,9 @@ public class BinlogClientRunner implements CommandLineRunner {
                             map.put("action","update");
                             map.put("where",shuzuToList(row.getKey()));
                             map.put("chage",shuzuToList(row.getValue()));
-                            System.out.println("update数据："+map);
+                            StringBuilder sb = new StringBuilder("update数据：");
+                            sb.append(map);
+                            logger.info(sb);
                             KafkaProducerDemo.send(topic, JSON.toJSONString(map));
                         }
                     }
@@ -116,7 +123,9 @@ public class BinlogClientRunner implements CommandLineRunner {
                             map.put("action","insert");
                             map.put("where","");
                             map.put("chage",shuzuToList(row));
-                            System.out.println("insert数据："+map);
+                            StringBuilder sb = new StringBuilder("insert数据：");
+                            sb.append(map);
+                            logger.info(sb);
                             KafkaProducerDemo.send(topic, JSON.toJSONString(map));
 
                         }
@@ -136,7 +145,9 @@ public class BinlogClientRunner implements CommandLineRunner {
                             map.put("action","delete");
                             map.put("where",shuzuToList(row));
                             map.put("chage","");
-                            System.out.println("delete数据："+map);
+                            StringBuilder sb = new StringBuilder("delete数据：");
+                            sb.append(map);
+                            logger.info(sb);
                             KafkaProducerDemo.send(topic, JSON.toJSONString(map));
 
                         }
