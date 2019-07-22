@@ -1,9 +1,9 @@
-package com.mysqlkafka.mysqlkafka.main;
+package com.mysqlkafka.producer.main;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
 import com.github.shyiko.mysql.binlog.event.*;
-import com.mysqlkafka.mysqlkafka.kafka.KafkaProducerDemo;
+import com.mysqlkafka.producer.kafka.MyKafkaProducer;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -99,7 +99,7 @@ public class BinlogClientRunner implements CommandLineRunner {
                             StringBuilder sb = new StringBuilder("update数据：");
                             sb.append(map);
                             logger.info(sb);
-                            KafkaProducerDemo.send(topic, map.toJSONString());
+                            MyKafkaProducer.send(topic, map.toJSONString());
                         }
                     }
                 }
@@ -119,7 +119,7 @@ public class BinlogClientRunner implements CommandLineRunner {
                             StringBuilder sb = new StringBuilder("insert数据：");
                             sb.append(map);
                             logger.info(sb);
-                            KafkaProducerDemo.send(topic, map.toJSONString());
+                            MyKafkaProducer.send(topic, map.toJSONString());
 
                         }
                     }
@@ -140,7 +140,7 @@ public class BinlogClientRunner implements CommandLineRunner {
                             StringBuilder sb = new StringBuilder("delete数据：");
                             sb.append(map);
                             logger.info(sb);
-                            KafkaProducerDemo.send(topic, map.toJSONString());
+                            MyKafkaProducer.send(topic, map.toJSONString());
 
                         }
                     }
