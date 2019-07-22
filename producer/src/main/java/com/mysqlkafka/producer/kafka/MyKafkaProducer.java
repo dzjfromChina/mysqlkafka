@@ -54,7 +54,6 @@ public class MyKafkaProducer {
         //创建生产者
         Producer<String, String> producer = new org.apache.kafka.clients.producer.KafkaProducer<>(props);
         ProducerRecord<String, String> producerRecord = new ProducerRecord<>(topic, msg);
-        //ProducerCallbackDemo producerCallbackDemo = new ProducerCallbackDemo();
         producer.send(producerRecord,new ProducerCallback(producerRecord,0));
     }
 

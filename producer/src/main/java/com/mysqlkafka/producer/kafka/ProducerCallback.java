@@ -12,8 +12,6 @@ import org.apache.log4j.LogManager;
 public class ProducerCallback implements Callback {
     public final org.apache.log4j.Logger logger = LogManager.getLogger(this.getClass());
 
-    MyKafkaProducer kafkaProducerDemo;
-
     ProducerRecord<String, String> record;
     int sendSeq = 0;
 
@@ -28,12 +26,12 @@ public class ProducerCallback implements Callback {
         //send success
         if (null == e) {
             String meta = "topic:" + recordMetadata.topic() + ", partition:" + recordMetadata.topic() + ", offset:" + recordMetadata.offset();
-            logger.info("send message success, record:" + record.toString() + ", meta:" + meta);
+            logger.info("发送成功, record:" + record.toString() + ", meta:" + meta);
             return;
         }
 
         //send failed
-        logger.error("send message failed, seq:" + sendSeq + ", record:" + record.toString() + ", errmsg:" + e.getMessage());
+        logger.error("发送失败, seq:" + sendSeq + ", record:" + record.toString() + ", errmsg:" + e.getMessage());
         if (sendSeq < 1) {
             MyKafkaProducer.send(record.topic(),record.key());
         }
